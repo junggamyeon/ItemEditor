@@ -1,0 +1,152 @@
+Metadata-Version: 2.4
+Name: endstone-itemeditor
+Version: 1.0.0
+Summary: Custom item editor plugin for Endstone Bedrock Server
+Author-email: ServerDev <dev@example.com>
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: endstone>=0.10.0
+Requires-Dist: ruamel.yaml>=0.18.0
+
+# ItemEditor
+
+A production-quality Endstone Bedrock Server plugin for creating, saving, and spawning custom items with extended enchantment levels, custom names, lore, damage, and durability.
+
+## Features
+
+- **`/ie create`** — Save the item in your main hand to `Item.yml` with a unique tag
+- **`/ie take <tag>`** — Spawn any registered custom item into your inventory
+- **`/ie list`** — View all registered item tags
+- **`/ie reload`** — Hot-reload `Item.yml` without restarting the server
+- **Extended enchantments** — Set enchantment levels far beyond vanilla caps (e.g. `MENDING: 100000`)
+- **Custom metadata** — Set custom display names, lore, damage values, and unbreakability
+- **Permission-based** — All commands require operator (configurable)
+- **Hot-reload** — Reload items at runtime without restart
+
+## Installation
+
+1. Build the plugin wheel:
+
+```bash
+cd plugins/ItemEditor
+pip install -e .
+```
+
+2. Start the server. The plugin will auto-generate `plugins/ItemEditor/Item.yml` on first run.
+
+3. (Optional) Edit `plugins/ItemEditor/Item.yml` to add or modify items.
+
+## Commands
+
+| Command | Permission | Description |
+|---------|-----------|-------------|
+| `/ie create` | `itemeditor.command.create` | Save held item to Item.yml |
+| `/ie take <tag>` | `itemeditor.command.take` | Give yourself a custom item |
+| `/ie list` | `itemeditor.command.ie` | List all registered item tags |
+| `/ie reload` | `itemeditor.command.reload` | Reload Item.yml |
+
+## Item.yml Format
+
+```yaml
+items:
+  my_sword:
+    material: minecraft:diamond_sword
+    name: "&b&lEpic Sword"
+    lore:
+      - "&7Forged in the nether"
+      - "&cDeal massive damage"
+    damage: 20
+    unbreakable: true
+    enchant:
+      minecraft:sharpness: 5000
+      minecraft:mending: 100000
+```
+
+### Available Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `material` | string | Minecraft item ID (e.g. `minecraft:diamond_sword`) |
+| `name` | string | Display name with color codes |
+| `lore` | list[string] | Item lore lines |
+| `amount` | int | Stack size (default: 1) |
+| `damage` | int | Item damage value |
+| `unbreakable` | bool | Infinite durability |
+| `enchant` | dict | `enchant_id: level` pairs |
+
+### Color Codes
+
+Use `&` instead of `§` in YAML files:
+
+| Code | Color |
+|------|-------|
+| `&0` | Black |
+| `&c` | Red |
+| `&e` | Yellow |
+| `&b` | Aqua |
+| `&d` | Light Purple |
+| `&l` | Bold |
+| `&o` | Italic |
+| `&r` | Reset |
+
+### Enchantment IDs
+
+```
+minecraft:sharpness     minecraft:mending       minecraft:efficiency
+minecraft:protection     minecraft:fire_aspect   minecraft:unbreaking
+minecraft:looting       minecraft:power         minecraft:infinity
+minecraft:knockback     minecraft:loot_bonus     minecraft:silk_touch
+```
+
+## Project Structure
+
+```
+ItemEditor/
+├── pyproject.toml
+├── src/
+│   └── itemeditor/
+│       ├── __init__.py
+│       ├── main.py                  # Plugin entry point
+│       ├── commands/
+│       │   ├── __init__.py
+│       │   └── command_handler.py  # All /ie subcommands
+│       ├── managers/
+│       │   ├── __init__.py
+│       │   ├── config_manager.py    # YAML load/save/reload
+│       │   └── item_manager.py     # Item registry & cache
+│       ├── resources/
+│       │   └── Item.yml            # Default item data
+│       └── utils/
+│           ├── __init__.py
+│           ├── color.py            # Color code translation
+│           └── item_serializer.py  # ItemStack <-> YAML
+└── README.md
+```
+
+## Permissions
+
+| Permission | Default | Description |
+|------------|---------|-------------|
+| `itemeditor.command.ie` | OP | Master permission (covers all subcommands) |
+| `itemeditor.command.create` | OP | Save items |
+| `itemeditor.command.take` | OP | Take items |
+| `itemeditor.command.reload` | OP | Reload config |
+
+## API Reference
+
+### Custom Item Data
+
+Items are serialized to YAML with these fields:
+
+- `material` — Item type identifier
+- `tag` — Unique identifier (auto-generated on create)
+- `name` — Translated display name
+- `lore` — Translated lore lines
+- `damage` — Damage value
+- `unbreakable` — Infinite durability flag
+- `enchant` — Enchantment ID → level map
+
+### Unsafe Enchantments
+
+Enchantments are applied using `meta.add_enchant(enchant, level, True)` where `force=True`
+bypasses the vanilla level cap, allowing items with extreme enchantment levels.
