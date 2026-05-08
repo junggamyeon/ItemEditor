@@ -7,15 +7,16 @@ name = "endstone-itemeditor"
 version = "1.0.0"
 description = "Custom item editor plugin for Endstone Bedrock Server"
 readme = "README.md"
-authors = [{ name = "ServerDev", email = "dev@example.com" }]
+license = "MIT"
+authors = [{ name = "Jung Ganmyeon", email = "jungganmyeon@gmail.com" }]
 requires-python = ">=3.10"
 dependencies = ["endstone>=0.10.0", "ruamel.yaml>=0.18.0"]
 
 [project.entry-points."endstone"]
-itemeditor = "itemeditor.main:ItemEditor"
+itemeditor = "serverdev_itemeditor.main:ItemEditor"
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.package-data]
-itemeditor = ["resources/*.yml"]
+serverdev_itemeditor = ["resources/*.yml"]
