@@ -18,19 +18,6 @@
 - **Permission-based** — All commands require operator (configurable)
 - **Hot-reload** — Reload items at runtime without restart
 
-<h3>Installation</h3>
-
-```bash
-pip install endstone-itemeditor
-```
-
-Or build from source:
-
-```bash
-cd plugins/ItemEditor
-pip install -e .
-```
-
 <h3>Commands</h3>
 
 | Command | Permission | Description |
@@ -68,30 +55,6 @@ items:
 | `damage` | int | Item damage value |
 | `unbreakable` | bool | Infinite durability |
 | `enchant` | dict | `enchant_id: level` pairs |
-
-<h3>Project Structure</h3>
-
-```
-ItemEditor/
-├── pyproject.toml
-├── icon.png
-├── LICENSE
-├── README.md
-├── src/
-│   └── jungganmyeon_itemeditor/
-│       ├── __init__.py
-│       ├── main.py                  # Plugin entry point
-│       ├── commands/
-│       │   └── command_handler.py   # All /ie subcommands
-│       ├── managers/
-│       │   ├── config_manager.py    # YAML load/save/reload
-│       │   └── item_manager.py      # Item registry & cache
-│       ├── resources/
-│       │   └── Item.yml            # Default item data
-│       └── utils/
-│           ├── color.py             # Color code translation
-│           └── item_serializer.py   # ItemStack <-> YAML
-```
 
 <h3>Permissions</h3>
 
