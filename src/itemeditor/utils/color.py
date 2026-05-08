@@ -14,7 +14,7 @@ _TRANSLATIONS: Final[dict[str, str]] = {
     "s": f"{_CHAR}s", "t": f"{_CHAR}t", "u": f"{_CHAR}u", "v": f"{_CHAR}v",
 }
 
-_PATTERN = re.compile(r"&([0-9a-v])", re.IGNORECASE)
+_PATTERN = re.compile(r"&([0-9a-vA-V])")
 
 
 def translate(text: str) -> str:
