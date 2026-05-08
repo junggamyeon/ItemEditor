@@ -15,15 +15,18 @@ _TRANSLATIONS: Final[dict[str, str]] = {
 }
 
 _PATTERN = re.compile(r"&([0-9a-vA-V])")
+_MAX_LENGTH: Final[int] = 32767  # Minecraft text limit
 
 
 def translate(text: str) -> str:
     if not text:
         return text
+    text = text[:_MAX_LENGTH]
     return _PATTERN.sub(lambda m: _TRANSLATIONS.get(m.group(1).lower(), m.group(0)), text)
 
 
 def strip_color(text: str) -> str:
     if not text:
         return text
+    text = text[:_MAX_LENGTH]
     return _PATTERN.sub("", text)
