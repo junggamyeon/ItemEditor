@@ -1,2 +1,2 @@
 [endstone]
-itemeditor = itemeditor.main:ItemEditor
+itemeditor = jungganmyeon_itemeditor.main:ItemEditor

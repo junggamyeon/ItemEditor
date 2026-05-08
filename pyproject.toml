@@ -13,10 +13,10 @@ requires-python = ">=3.10"
 dependencies = ["endstone>=0.10.0", "ruamel.yaml>=0.18.0"]
 
 [project.entry-points."endstone"]
-itemeditor = "serverdev_itemeditor.main:ItemEditor"
+itemeditor = "jungganmyeon_itemeditor.main:ItemEditor"
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.package-data]
-serverdev_itemeditor = ["resources/*.yml"]
+jungganmyeon_itemeditor = ["resources/*.yml"]
